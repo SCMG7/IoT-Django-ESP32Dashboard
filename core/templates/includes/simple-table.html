@@ -1,0 +1,42 @@
+<div class="col-lg-6 col-md-12">
+    <div class="card ">
+        <div class="card-header">
+            <h4 class="card-title">{{ param }}</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table tablesorter " id="">
+                    <thead class=" text-primary">
+                    <tr>
+                        <th>ID</th>
+                        <th>Timestamp</th>
+                        <th>Temperature</th>
+                        <th>Humidity</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if records %}
+                        {% for record in records %}
+                        <tr>
+                            <td>{{ record.id }}</td>
+                            <td>{{ record.timestamp | date:"Y-m-d H:m:s" }}  </td>
+                            <td>{{ record.temperature }}°C</td>
+                            <td>{{ record.humidity }}%</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        {% for i in '0123456789'|make_list %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>Dakota Rice</td>
+                                <td>Niger</td>
+                                <td>Oud-Turnhout</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+    {% include 'includes/card-chart.html' with param='Temperature °C' id='chartBig1' value=temperature %}
+
+    {% include 'includes/card-chart.html' with param='Humidity %' id='chartBig2' value=humidity %}
+
+    <div class="row">
+      {% include 'includes/simple-table.html' with param='Last readings' records=last_readings %}
+{#      {% include 'includes/simple-table.html' with param='Last aggregated readings' %}#}
+    </div>
+
+    <blockquote>
+    {{ data_by_hour }}
+    </blockquote>
+
+    <blockquote>
+    {{ data_by_minutes }}
+    </blockquote>
+
+    <blockquote>
+    {{ data_by_seconds }}
+    </blockquote>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in core/static/assets/demo/demo.js
+      let data_by_hour = [
+          {% for data in data_by_hour %}
+          {
+              'year': {{data.year}},
+              'month': {{data.month}},
+              'day': {{data.day}},
+              'hour': {{data.hour}},
+              'closest_part_of_day': '{{data.closest_part_of_day}}',
+              'average_temperature': {{data.average_temperature}},
+              'average_humidity': {{data.average_humidity}},
+          }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+      ];
+      let data_by_minutes = [
+          {% for data in data_by_minutes %}
+          {
+              'year': {{data.year}},
+              'month': {{data.month}},
+              'day': {{data.day}},
+              'hour': {{data.hour}},
+              'minute': {{data.minute}},
+              'closest_part_of_hour': '{{data.closest_part_of_hour}}',
+              'average_temperature': {{data.average_temperature}},
+              'average_humidity': {{data.average_humidity}},
+          }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+      ];
+      let data_by_seconds = [
+          {% for data in data_by_seconds %}
+          {
+              'year': {{data.year}},
+              'month': {{data.month}},
+              'day': {{data.day}},
+              'hour': {{data.hour}},
+              'minute': {{data.minute}},
+              'second': {{data.second}},
+              'closest_part_of_minute': '{{data.closest_part_of_minute}}',
+              'average_temperature': {{data.average_temperature}},
+              'average_humidity': {{data.average_humidity}},
+          }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+      ];
+      demo.initDashboardPageCharts(data_by_hour, data_by_minutes, data_by_seconds);
+
+    });
+  </script>
+
+{% endblock javascripts %}
